@@ -1,16 +1,35 @@
 Steps to start with the assignment:
 >> Open vscode and open folder where you want to keep your Github repo folder
+=======================
+Note: 
+This is for the first time clone and push to the git. 
+From the second time onwards, there're different steps to follow, given at the bottom.
+========================
+
 >> Clone the repo using command:
 git clone https://github.com/dipakmeher/SWE645_TeamCDN.git
 
 >> Now, Complete your work. I've created HW2 folder. Place your file in that folder only for HW2. 
 Once done, its time to push your work in the git
 >> Create branch of your name using command:
-git checkout -b dipakmeher
+git checkout -b YOURNAME
+Ex: git checkout -b dipakmeher
 >> Add your work on this branch using command: git add .
 >> Commit your changes to your branch: git commit -m "Write summarized commit message of your work"
 >> Push the changes to your branch: git push origin dipakmeher
 
 >> Your branch will be merged to Main branch if the there is no error.
+
+======================
+
+
+From second time onwards,
+>> Get into your branch: git branch dipakmeher
+>> Pull the git repo using: git pull origin master
+
+Master branch code will be with you now.
+
+
+
 
 Thanks.
