@@ -22,8 +22,8 @@ Ex: git checkout -b dipakmeher
 
 ======================
 
-
 From second time onwards,
+>> Check in which brach you are in: git status
 >> Get into your branch: git branch dipakmeher
 >> Pull the git repo using: git pull origin master
 
