@@ -4,7 +4,7 @@ pipeline{
         DOCKERHUB_PASS = credentials('docker')
     }
     stages{
-        stage{"Building the Student Survey Image"}{
+        stage("Building the Student Survey Image"){
             steps{
                 script{
                     checkout scm
