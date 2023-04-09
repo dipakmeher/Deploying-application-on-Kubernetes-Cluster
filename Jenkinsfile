@@ -52,7 +52,7 @@ pipeline {
         stage('Deploying Rancher to Load Balancer') {
             steps {
                 script{
-                    sh 'kubectl set image deployment/surveyformlb container-0=dipakmeher51/studentsurvey645:'+tag
+                    sh 'kubectl set image deployment/hw2-cluster-deploymentlb container-0=dipakmeher51/studentsurvey645:'+tag
                 }
             }
         }
