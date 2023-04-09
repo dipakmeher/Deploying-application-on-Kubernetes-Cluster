@@ -4,7 +4,7 @@ pipeline{
         DOCKERHUB_PASS = credentials('docker')
     }
     stages{
-        stage{"Building the Student Survey Image"}{
+        stage{'Building the Student Survey Image'}{
             steps{
                 script{
                     checkout scm
@@ -17,19 +17,19 @@ pipeline{
             }
         }
     }
-    stage("Pushing Image to DockerHub"){
+    stage('Pushing Image to DockerHub'){
         steps{
             script{
                 sh 'docker push dipakmeher51/studentsurvey645:${BUILD_TIMESTAMP}'
             }
         }
     }
-    stage("Deploying to Rancher as single pod"){
+    stage('Deploying to Rancher as single pod'){
         steps{
             sh 'kubectl set image deployment/stusurvey-pipeline stusurvey-pipeline=dipakmeher51/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline'
         }
     }
-    stage("Deploying to Rancher as with load balancer"){
+    stage('Deploying to Rancher as with load balancer'){
         steps{
             sh 'kubectl set image deployment/studentsurvey645-lb studentsurvey645-lb=dipakmeher51/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline'
         }
