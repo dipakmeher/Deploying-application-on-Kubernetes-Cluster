@@ -15,11 +15,12 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean package'
-                    sh 'echo ${BUILD_TIMESTAMP}'
-                    tag = generateTag()
+                    checkout scm
+                    sh 'rm -rf *.war'
+                    sh 'jar -cvf StudentSurvey_DipakMeher645.war -C WebContent/ .'
+                    sh 'echo ${BUILD TIMESTAMP}'
                     docker.withRegistry('',registryCredential){
-                      def customImage = docker.build("dipakmeher51/studentsurvey645:"+tag)
+                    def customImage = docker.build("dipakmeher51/studentsurvey645:"+tag)
                    }
                }
             }
