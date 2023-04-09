@@ -1,37 +1,57 @@
-pipeline{
-    agent any
-    environment{
-        DOCKERHUB_PASS = credentials('docker')
+@NonCPS
+def generateTag() {
+    return "build-" + new Date().format("yyyyMMdd-HHmmss")
+}
+
+pipeline {
+    environment {
+        registry = "dipakmeher51/studentsurvey645"
+        registryCredential = 'docker'
     }
+    agent any
+
     stages{
-        stage("Building the Student Survey Image"){
-            steps{
-                script{
-                    checkout scm
-                    sh "rm -rf *.war"
-                    sh "jar -cvf StudentSurvey_DipakMeher645.war *"
-                    sh "echo ${BUILD_TIMESTAMP}"
-                    sh "docker login -u dipakmeher51 -p ${DOCKERHUB_PASS}"
-                    def customImage = docker.build("dipakmeher51/studentsurvey645:${BUILD_TIMESTAMP}")
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'mvn clean package'
+                    sh 'echo ${BUILD_TIMESTAMP}'
+                    tag = generateTag()
+                    docker.withRegistry('',registryCredential){
+                      def customImage = docker.build("dipakmeher51/studentsurvey645:"+tag)
+                   }
+               }
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    sh 'echo ${BUILD_TIMESTAMP}'
+                    docker.withRegistry('',registryCredential) {
+                        def image = docker.build('dipakmeher51/studentsurvey645:'+tag, '.')
+                        docker.withRegistry('',registryCredential) {
+                            image.push()
+                        }
+                    }
                 }
             }
         }
-    
-        stage("Pushing Image to DockerHub"){
-            steps{
+
+      stage('Deploying Rancher to single node') {
+            steps {
                 script{
-                    sh "docker push dipakmeher51/studentsurvey645:${BUILD_TIMESTAMP}"
+                sh 'kubectl set image deployment/surveyform container-0=dipakmeher51/studentsurvey645:'+tag
                 }
             }
         }
-        stage("Deploying to Rancher as single pod"){
-            steps{
-                sh "kubectl set image deployment/stusurvey-pipeline stusurvey-pipeline=dipakmeher51/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline"
-            }
-        }
-        stage("Deploying to Rancher as with load balancer"){
-            steps{
-                sh "kubectl set image deployment/studentsurvey645-lb studentsurvey645-lb=dipakmeher51/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline"
+
+        stage('Deploying Rancher to Load Balancer') {
+            steps {
+                script{
+                    sh 'kubectl set image deployment/surveyformlb container-0=dipakmeher51/studentsurvey645:'+tag
+                }
             }
         }
     }
