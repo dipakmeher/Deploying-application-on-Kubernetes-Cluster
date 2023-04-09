@@ -18,7 +18,8 @@ pipeline {
                     checkout scm
                     sh 'rm -rf *.war'
                     sh 'jar -cvf StudentSurvey_DipakMeher645.war -C WebContent/ .'
-                    sh 'echo ${BUILD TIMESTAMP}'
+                    // sh 'echo ${BUILD TIMESTAMP}'
+                    tag = generateTag()
                     docker.withRegistry('',registryCredential){
                     def customImage = docker.build("dipakmeher51/studentsurvey645:"+tag)
                    }
@@ -29,7 +30,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    sh 'echo ${BUILD_TIMESTAMP}'
+                    // sh 'echo ${BUILD_TIMESTAMP}'
                     docker.withRegistry('',registryCredential) {
                         def image = docker.build('dipakmeher51/studentsurvey645:'+tag, '.')
                         docker.withRegistry('',registryCredential) {
