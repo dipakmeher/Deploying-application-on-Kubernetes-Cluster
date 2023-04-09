@@ -44,7 +44,7 @@ pipeline {
       stage('Deploying Rancher to single node') {
             steps {
                 script{
-                sh 'kubectl set image deployment/surveyform container-0=dipakmeher51/studentsurvey645:'+tag
+                sh 'kubectl set image deployment/hw2-cluster-deployment container-0=dipakmeher51/studentsurvey645:'+tag
                 }
             }
         }
