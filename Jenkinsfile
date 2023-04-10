@@ -17,7 +17,7 @@ pipeline {
                 script {
                     checkout scm
                     sh 'rm -rf *.war'
-                    sh 'jar -cvf StudentSurvey_DipakMeher645.war -C WebContent/ .'
+                    sh 'jar -cvf StudentSurvey_DipakMeher645.war -C webapp/ .'
                     // sh 'echo ${BUILD TIMESTAMP}'
                     tag = generateTag()
                     docker.withRegistry('',registryCredential){
