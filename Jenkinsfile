@@ -1,8 +1,13 @@
+//  GroupName: TeamCDN (Chaitra Bekal, Dipak Meher, Nishad Main)
+//  Jenkinsfile defines the pipeline in scm and here, there are 4 stages in 
+//  this CICD pipeline: Build, Push to DockerHub, Deploying Rancher to single node, Deploying Rancher to Load Balancer 
+
+
 @NonCPS
 def generateTag() {
     return "build-" + new Date().format("yyyyMMdd-HHmmss")
 }
-
+// Pipeline Stages
 pipeline {
     environment {
         registry = "dipakmeher51/studentsurvey645"
@@ -11,7 +16,7 @@ pipeline {
     agent any
 
     stages{
-
+        //  Build Stage
         stage('Build') {
             steps {
                 script {
@@ -26,7 +31,7 @@ pipeline {
                }
             }
         }
-
+        // Push to DockerHub Stage
         stage('Push to Docker Hub') {
             steps {
                 script {
@@ -40,15 +45,15 @@ pipeline {
                 }
             }
         }
-
-      stage('Deploying Rancher to single node') {
+        // Deploying Rancher to single node
+        stage('Deploying Rancher to single node') {
             steps {
                 script{
                 sh 'kubectl set image deployment/hw2-cluster-deployment container-0=dipakmeher51/studentsurvey645:'+tag
                 }
             }
         }
-
+        // Deploying Rancher to Load Balancer
         stage('Deploying Rancher to Load Balancer') {
             steps {
                 script{
