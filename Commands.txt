@@ -1,4 +1,4 @@
-Steps to start with the assignment:
+Github Commands:
 >> Open vscode and open folder where you want to keep your Github repo folder
 =======================
 Note: 
